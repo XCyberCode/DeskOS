@@ -26,4 +26,8 @@ void app_main(void)
         .resolution_hz = 10 * 1000 * 1000, // 10MHz
         .flags.with_dma = false, // whether to enable the DMA feature
     };
+
+    ESP_ERROR_CHECK(led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip));
+    ESP_ERROR_CHECK(led_strip_set_pixel(led_strip, 32, 0, 255, 0));
+    ESP_ERROR_CHECK(led_strip_refresh(led_strip));
 }
