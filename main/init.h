@@ -1,8 +1,11 @@
 #include <freertos/task.h>
 #include <freertos/FreeRTOS.h>
 
+// Include core components
+#include "led_matrix.h"
+
 void init_system(void *pvParameters)
 {
-    init_led_strip();
+    led_matrix_init();
     vTaskDelete(NULL);
 }

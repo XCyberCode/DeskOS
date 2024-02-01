@@ -2,7 +2,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-// Include system libraries
+// Include core components
 #include "init.h"
 
 void app_main(void) 
