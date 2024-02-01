@@ -3,6 +3,7 @@
 
 // Include external libraries
 #include <led_strip.h>
+#include <conf.h>
 
 // Configure global variables
 led_strip_handle_t led_strip;
@@ -17,10 +18,10 @@ void clear_led_strip(led_strip_handle_t strip, uint32_t leds_count)
 
 void init_led_strip(void) 
 {
-    /* LED strip initialization with the GPIO and pixels number*/
+    // LED strip initialization with the GPIO and pixels number
     led_strip_config_t strip_config = {
-        .strip_gpio_num = GPIO_NUM_32, // The GPIO that connected to the LED strip's data line
-        .max_leds = 64, // The number of LEDs in the strip,
+        .strip_gpio_num = MCON_GPIO, // The GPIO that connected to the LED strip's data line
+        .max_leds = MATRIX_WIDTH * MATRIX_HEIGHT, // The number of LEDs in the strip,
         .led_pixel_format = LED_PIXEL_FORMAT_GRB, // Pixel format of your LED strip
         .led_model = LED_MODEL_WS2812, // LED strip model
         .flags.invert_out = false, // whether to invert the output signal (useful when your hardware has a level inverter)
