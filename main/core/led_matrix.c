@@ -1,12 +1,6 @@
 // Include header file
 #include <led_matrix.h>
 
-// Include internal libraries
-#include <esp_err.h>
-
-// Include extenal libraries
-#include <led_strip.h>
-
 // Include core components
 #include <sysconf.h>
 
