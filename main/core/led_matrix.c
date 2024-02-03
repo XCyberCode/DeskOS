@@ -28,16 +28,20 @@ esp_err_t led_matrix_draw_pixel(
 {
     if(y % 2 == 0)
     {
-        led_strip_set_pixel(
-            matrix_handle, y * MATRIX_WIDTH + x, 
-            red, green, blue
+        ESP_ERROR_CHECK(
+            led_strip_set_pixel(
+                matrix_handle, y * MATRIX_WIDTH + x, 
+                red, green, blue
+            )
         );
     }
     else
     {
-        led_strip_set_pixel(
-            matrix_handle, y * MATRIX_WIDTH + 7 - x, 
-            red, green, blue
+        ESP_ERROR_CHECK(
+            led_strip_set_pixel(
+                matrix_handle, y * MATRIX_WIDTH + 7 - x, 
+                red, green, blue
+            )
         );
     }
     return ESP_OK;
@@ -51,7 +55,7 @@ esp_err_t led_matrix_draw_h_line(
 {
     for(int pixel = 0; pixel < length; pixel++)
     {
-        led_matrix_draw_pixel(matrix_handle, x + pixel, y, red, green, blue);
+        ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x + pixel, y, red, green, blue));
     }
     return ESP_OK;
 }
@@ -64,7 +68,7 @@ esp_err_t led_matrix_draw_v_line(
 {
     for(int pixel = 0; pixel < length; pixel++)
     {
-        led_matrix_draw_pixel(matrix_handle, x, y + pixel, red, green, blue);
+        ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x, y + pixel, red, green, blue));
     }
     return ESP_OK;
 }
