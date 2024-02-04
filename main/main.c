@@ -81,7 +81,7 @@ void app_main(void)
         }
 
         ESP_ERROR_CHECK(led_matrix_clear(matrix_handle));
-        ESP_ERROR_CHECK(led_matrix_draw_v_line(matrix_handle, line_x, 0, 8, 0, 30, 30));
+        ESP_ERROR_CHECK(led_matrix_draw_v_line(matrix_handle, line_x, 0, 8, 0, 3, 3, 10));
         ESP_ERROR_CHECK(led_strip_refresh(matrix_handle));
     }
 }

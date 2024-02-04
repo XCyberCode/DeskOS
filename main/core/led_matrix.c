@@ -18,14 +18,14 @@ esp_err_t led_matrix_clear(led_strip_handle_t matrix_handle)
 esp_err_t led_matrix_draw_pixel(
     led_strip_handle_t matrix_handle, 
     uint16_t x, uint16_t y, 
-    uint8_t red, uint8_t green, uint8_t blue)
+    uint8_t red, uint8_t green, uint8_t blue, uint8_t brightness)
 {
     if(y % 2 == 0)
     {
         ESP_ERROR_CHECK(
             led_strip_set_pixel(
                 matrix_handle, y * MATRIX_WIDTH + x, 
-                red, green, blue
+                red * brightness, green * brightness, blue * brightness
             )
         );
     }
@@ -34,7 +34,7 @@ esp_err_t led_matrix_draw_pixel(
         ESP_ERROR_CHECK(
             led_strip_set_pixel(
                 matrix_handle, y * MATRIX_WIDTH + 7 - x, 
-                red, green, blue
+                red * brightness, green * brightness, blue * brightness
             )
         );
     }
@@ -44,12 +44,13 @@ esp_err_t led_matrix_draw_pixel(
 esp_err_t led_matrix_draw_h_line(
     led_strip_handle_t matrix_handle,        // Matrix handle
     uint16_t x, uint16_t y, uint16_t length, // Line properties
-    uint8_t red, uint8_t green, uint8_t blue                     // Color of the pixelss
+    uint8_t red, uint8_t green, uint8_t blue,
+    uint8_t brightness
 )
 {
     for(int pixel = 0; pixel < length; pixel++)
     {
-        ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x + pixel, y, red, green, blue));
+        ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x + pixel, y, red, green, blue, brightness));
     }
     return ESP_OK;
 }
@@ -57,12 +58,13 @@ esp_err_t led_matrix_draw_h_line(
 esp_err_t led_matrix_draw_v_line(
     led_strip_handle_t matrix_handle, 
     uint16_t x, uint16_t y, uint32_t length, 
-    uint8_t red, uint8_t green, uint8_t blue
+    uint8_t red, uint8_t green, uint8_t blue,
+    uint8_t brightness
 )
 {
     for(int pixel = 0; pixel < length; pixel++)
     {
-        ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x, y + pixel, red, green, blue));
+        ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x, y + pixel, red, green, blue, brightness));
     }
     return ESP_OK;
 }
