@@ -57,7 +57,7 @@ esp_err_t led_matrix_draw_h_line(
 
 esp_err_t led_matrix_draw_v_line(
     led_strip_handle_t matrix_handle, 
-    uint16_t x, uint16_t y, uint32_t length, 
+    uint16_t x, uint16_t y, uint16_t length, 
     uint8_t red, uint8_t green, uint8_t blue,
     uint8_t brightness
 )
@@ -65,6 +65,38 @@ esp_err_t led_matrix_draw_v_line(
     for(int pixel = 0; pixel < length; pixel++)
     {
         ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x, y + pixel, red, green, blue, brightness));
+    }
+    return ESP_OK;
+}
+
+esp_err_t led_matrix_draw_d_line
+(
+    led_strip_handle_t matrix_handle,
+    uint16_t y, uint16_t length,
+    bool direction,
+    uint8_t red, uint8_t green, uint8_t blue,
+    uint8_t brightness
+)
+{
+    if(direction)
+    {
+        for(int y_axis = y; y_axis <= y + length - 1; y_axis++)
+        {
+            ESP_ERROR_CHECK(led_matrix_draw_pixel(
+                matrix_handle, y_axis, y_axis, 
+                red, green, blue, brightness
+            ));
+        }
+    }
+    else
+    {
+        for(int y_axis = y; y_axis >= y - length; y_axis--)
+        {
+            ESP_ERROR_CHECK(led_matrix_draw_pixel(
+                matrix_handle, y_axis, y_axis, 
+                red, green, blue, brightness
+            ));
+        }
     }
     return ESP_OK;
 }
