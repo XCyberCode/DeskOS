@@ -40,6 +40,7 @@ void app_main(void)
 
     // Initialize GPIOS
     ESP_ERROR_CHECK(gpio_set_direction(CON1_GPIO, GPIO_MODE_INPUT));
+    ESP_ERROR_CHECK(gpio_set_direction(CON2_GPIO, GPIO_MODE_INPUT));
     ESP_ERROR_CHECK(gpio_set_direction(CON3_GPIO, GPIO_MODE_INPUT));
 
     // Initialize NVS storage
@@ -66,21 +67,5 @@ void app_main(void)
         setup_device(matrix_handle, nvs_storage_handle);
     }
 
-    uint8_t line_x = 0;
-    while(1)
-    {
-        if(gpio_get_level(CON1_GPIO) && line_x > 0)
-        {
-            while(gpio_get_level(CON1_GPIO)){}
-            line_x--;   
-        }
-
-        if(gpio_get_level(CON3_GPIO) && line_x < 7)
-        {
-            while(gpio_get_level(CON3_GPIO)){}
-            line_x++;
-        }
-
-        ESP_ERROR_CHECK(effect_bouncing_ball(matrix_handle));        
-    }
+    ESP_ERROR_CHECK(effect_hsv_rainbow(matrix_handle));
 }
