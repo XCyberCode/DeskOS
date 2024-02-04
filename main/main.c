@@ -81,6 +81,6 @@ void app_main(void)
             line_x++;
         }
 
-        ESP_ERROR_CHECK(effect_hsv_rainbow(matrix_handle));        
+        ESP_ERROR_CHECK(effect_bouncing_ball(matrix_handle));        
     }
 }

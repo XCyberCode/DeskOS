@@ -6,8 +6,8 @@
 // Matrix parameters
 #define MCON1_GPIO GPIO_NUM_32
 #define MATRIX_WIDTH 8
-#define MATRIX_LENGTH 8
-#define MATRIX_AREA MATRIX_LENGTH * MATRIX_WIDTH
+#define MATRIX_HEIGHT 8
+#define MATRIX_AREA MATRIX_HEIGHT * MATRIX_WIDTH
 
 // System configuration
 #define DEFAULT_BRIGHTNESS 1 // From 1 ... 25
