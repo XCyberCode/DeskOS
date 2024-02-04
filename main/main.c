@@ -12,6 +12,7 @@
 #include <sysconf.h>
 #include <led_matrix.h>
 #include <init.h>
+#include <effects.h>
 
 // Global variables
 led_strip_handle_t matrix_handle;
@@ -80,8 +81,6 @@ void app_main(void)
             line_x++;
         }
 
-        ESP_ERROR_CHECK(led_matrix_clear(matrix_handle));
-        ESP_ERROR_CHECK(led_matrix_draw_d_line(matrix_handle, 1, 5, 1, 3, 0, 0, 10));
-        ESP_ERROR_CHECK(led_strip_refresh(matrix_handle));
+        ESP_ERROR_CHECK(effect_hsv_rainbow(matrix_handle));        
     }
 }
