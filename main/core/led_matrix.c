@@ -24,7 +24,7 @@ esp_err_t led_matrix_draw_pixel(
     {
         ESP_ERROR_CHECK(
             led_strip_set_pixel(
-                matrix_handle, y * MATRIX_WIDTH + x, 
+                matrix_handle, (7 - y) * MATRIX_WIDTH + x, 
                 red * brightness, green * brightness, blue * brightness
             )
         );
@@ -33,7 +33,7 @@ esp_err_t led_matrix_draw_pixel(
     {
         ESP_ERROR_CHECK(
             led_strip_set_pixel(
-                matrix_handle, y * MATRIX_WIDTH + 7 - x, 
+                matrix_handle, (7 - y) * MATRIX_WIDTH + 7 - x, 
                 red * brightness, green * brightness, blue * brightness
             )
         );
