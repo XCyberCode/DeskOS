@@ -1,2 +1,2 @@
-# FreeDeskOS
-## Modern operating system for ΣNIGMΛ DESK 
+# DeskOS
+## Modern operating system for MTRX devices
