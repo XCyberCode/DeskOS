@@ -47,6 +47,7 @@ esp_err_t setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storag
 
         if(gpio_get_level(CON2_GPIO))
         {
+            while(gpio_get_level(CON2_GPIO));
             break;
         }
     }

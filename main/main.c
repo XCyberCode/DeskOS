@@ -20,6 +20,7 @@ nvs_handle_t nvs_storage_handle;
 
 void app_main(void) 
 {
+    uint8_t current_effect = DEFAULT_EFFECT;
     // Configure hardware
     led_strip_config_t strip_config = {
         .strip_gpio_num = MCON1_GPIO,
@@ -67,5 +68,30 @@ void app_main(void)
         setup_device(matrix_handle, nvs_storage_handle);
     }
 
-    ESP_ERROR_CHECK(effect_hsv_rainbow(matrix_handle));
+    while(1)
+    {
+        if(current_effect == 0)
+        {
+            effect_hsv_rainbow(matrix_handle);
+        }
+        else if(current_effect == 1)
+        {
+            effect_linear_hsv_rainbow(matrix_handle);
+        }
+        else if(current_effect == 2)
+        {
+            effect_bouncing_ball(matrix_handle);
+        }
+        
+        while(gpio_get_level(CON2_GPIO));
+
+        if(current_effect < EFFECTS_AMOUNT - 1)
+        {
+            current_effect++;
+        }
+        else
+        {
+            current_effect = 0;
+        }
+    }
 }
