@@ -15,3 +15,16 @@
 
 // System configuration
 #define DEFAULT_BRIGHTNESS 1 // From 1 ... 25
+
+// Default effect for first setup
+// Available effects:
+// 0 - effect_hsv_rainbow
+// 1 - effect_linear_hsv_rainbow
+// 2 - effect_bouncing_ball
+#define DEFAULT_EFFECT 0
+
+// Number of effects
+#define EFFECTS_AMOUNT 3
+
+// Deep configuration
+#define ESP_ERR_BUTTON_INTERRUPT 0x10E
