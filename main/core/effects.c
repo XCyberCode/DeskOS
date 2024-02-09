@@ -16,7 +16,7 @@
 
 uint32_t timer_buffer = 0;
 
-void effect_hsv_rainbow(led_strip_handle_t matrix_handle)
+void effect_hsv_rainbow(led_strip_handle_t matrix_handle, uint8_t matrix_brightness)
 {
     uint16_t hue_value = 0;
     while(1)
@@ -45,6 +45,8 @@ void effect_hsv_rainbow(led_strip_handle_t matrix_handle)
 
 void effect_linear_hsv_rainbow(led_strip_handle_t matrix_handle, uint8_t matrix_brightness)
 {
+    while(1)
+    {
         for(int hue_value = 0; hue_value < 360 - MATRIX_WIDTH * 4; hue_value++)
         {
             ESP_ERROR_CHECK(led_matrix_clear(matrix_handle));
