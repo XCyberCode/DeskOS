@@ -5,7 +5,7 @@
 #include <sysconf.h>
 #include <led_matrix.h>
 
-esp_err_t setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_handle)
+void setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_handle)
 {
     uint8_t matrix_brightness = 10;
 
@@ -52,5 +52,6 @@ esp_err_t setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storag
         }
     }
     ESP_ERROR_CHECK(nvs_set_i8(nvs_storage_handle, "brightness", matrix_brightness));
-    return ESP_OK;
+    ESP_ERROR_CHECK(nvs_set_i8(nvs_storage_handle, "init_state", 1));
+    esp_restart();
 }
