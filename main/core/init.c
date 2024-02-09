@@ -7,8 +7,9 @@
 
 void setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_handle)
 {
-    uint8_t matrix_brightness = 10;
+    ESP_ERROR_CHECK(nvs_set_u8(nvs_storage_handle, "init_state", 0));
 
+    uint8_t matrix_brightness = 10;
     while(1)
     {
         led_matrix_draw_h_line
@@ -51,7 +52,7 @@ void setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_han
             break;
         }
     }
-    ESP_ERROR_CHECK(nvs_set_i8(nvs_storage_handle, "brightness", matrix_brightness));
+    ESP_ERROR_CHECK(nvs_set_u8(nvs_storage_handle, "brightness", matrix_brightness));
     ESP_ERROR_CHECK(nvs_set_u8(nvs_storage_handle, "init_state", 1));
     esp_restart();
 }

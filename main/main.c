@@ -72,9 +72,11 @@ void app_main(void)
             // Proceed setup
             setup_device(matrix_handle, nvs_storage_handle);
         }
-
-        // Set variables values
-        ESP_ERROR_CHECK(nvs_get_u8(nvs_storage_handle, "brightness", &matrix_brightness));
+        else
+        {
+            // Set variables values
+            nvs_get_u8(nvs_storage_handle, "brightness", &matrix_brightness);
+        }
     }
     // Check NVS entry existance
     else if(nvs_err == ESP_ERR_NVS_NOT_FOUND)
