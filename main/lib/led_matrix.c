@@ -175,3 +175,70 @@ void led_matrix_draw_h_line_hsv
         );
     }
 }
+
+void led_matrix_draw_rect
+(
+    led_strip_handle_t matrix_handle,
+    uint16_t x, uint16_t y,
+    uint16_t width, uint16_t height,
+    uint8_t red, uint8_t green, uint8_t blue
+)
+{
+    led_matrix_draw_v_line(
+        matrix_handle, 
+        x, y, height, 
+        red, green, blue
+    );
+
+    led_matrix_draw_v_line(
+        matrix_handle, 
+        x + width - 1, y, height, 
+        red, green, blue
+    );
+
+    led_matrix_draw_h_line(
+        matrix_handle,
+        x, y + height - 1, width,
+        red, green, blue
+    );
+
+    led_matrix_draw_h_line(
+        matrix_handle,
+        x, y, width,
+        red, green, blue
+    );
+}
+
+
+void led_matrix_draw_rect_hsv
+(
+    led_strip_handle_t matrix_handle,
+    uint16_t x, uint16_t y,
+    uint16_t width, uint16_t height,
+    uint16_t hue, uint8_t saturation, uint8_t brightness
+)
+{
+    led_matrix_draw_v_line_hsv(
+        matrix_handle, 
+        x, y, height, 
+        hue, saturation, brightness
+    );
+
+    led_matrix_draw_v_line_hsv(
+        matrix_handle, 
+        x + width - 1, y, height, 
+        hue, saturation, brightness
+    );
+
+    led_matrix_draw_h_line_hsv(
+        matrix_handle,
+        x, y + height - 1, width,
+        hue, saturation, brightness
+    );
+
+    led_matrix_draw_h_line_hsv(
+        matrix_handle,
+        x, y, width,
+        hue, saturation, brightness
+    );
+}
