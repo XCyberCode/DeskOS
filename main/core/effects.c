@@ -43,35 +43,8 @@ void effect_hsv_rainbow(led_strip_handle_t matrix_handle)
     }
 }
 
-void effect_linear_hsv_rainbow(led_strip_handle_t matrix_handle)
+void effect_linear_hsv_rainbow(led_strip_handle_t matrix_handle, uint8_t matrix_brightness)
 {
-    while(1)
-    {
-        /* if(hue_value < 360 - MATRIX_WIDTH * 4)
-        {
-            hue_value++;
-        }
-        else
-        {
-            hue_value = 0;
-        }
-
-        ESP_ERROR_CHECK(led_matrix_clear(matrix_handle));
-        for(int current_line = 0; current_line < MATRIX_WIDTH; current_line++)
-        {
-            led_matrix_draw_v_line_hsv(matrix_handle, current_line, 0, MATRIX_HEIGHT, hue_value + current_line * 4, 255, 30);
-        }
-        ESP_ERROR_CHECK(led_strip_refresh(matrix_handle));
-
-        timer_buffer = esp_timer_get_time();
-        while(esp_timer_get_time() < timer_buffer + 50 * 1000)
-        {
-            if(gpio_get_level(CON2_GPIO))
-            {
-                return;
-            }
-        }; */
-
         for(int hue_value = 0; hue_value < 360 - MATRIX_WIDTH * 4; hue_value++)
         {
             ESP_ERROR_CHECK(led_matrix_clear(matrix_handle));
@@ -93,7 +66,7 @@ void effect_linear_hsv_rainbow(led_strip_handle_t matrix_handle)
     }
 }
 
-void effect_bouncing_ball(led_strip_handle_t matrix_handle)
+void effect_bouncing_ball(led_strip_handle_t matrix_handle, uint8_t matrix_brightness)
 {
     uint8_t ball_x = 4;
     uint8_t ball_y = 7;
