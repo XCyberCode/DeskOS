@@ -52,6 +52,6 @@ void setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_han
         }
     }
     ESP_ERROR_CHECK(nvs_set_i8(nvs_storage_handle, "brightness", matrix_brightness));
-    ESP_ERROR_CHECK(nvs_set_i8(nvs_storage_handle, "init_state", 1));
+    ESP_ERROR_CHECK(nvs_set_u8(nvs_storage_handle, "init_state", 1));
     esp_restart();
 }

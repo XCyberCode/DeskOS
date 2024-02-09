@@ -74,7 +74,7 @@ void app_main(void)
         }
 
         // Set variables values
-        ESP_ERROR_CHECK(nvs_get_i8(nvs_storage_handle, "brightness", &matrix_brightness));
+        ESP_ERROR_CHECK(nvs_get_u8(nvs_storage_handle, "brightness", &matrix_brightness));
     }
     // Check NVS entry existance
     else if(nvs_err == ESP_ERR_NVS_NOT_FOUND)
@@ -88,15 +88,15 @@ void app_main(void)
     {
         if(current_effect == 0)
         {
-            effect_hsv_rainbow(matrix_handle);
+            effect_hsv_rainbow(matrix_handle, matrix_brightness);
         }
         else if(current_effect == 1)
         {
-            effect_linear_hsv_rainbow(matrix_handle);
+            effect_linear_hsv_rainbow(matrix_handle, matrix_brightness);
         }
         else if(current_effect == 2)
         {
-            effect_bouncing_ball(matrix_handle);
+            effect_bouncing_ball(matrix_handle, matrix_brightness);
         }
         
         while(gpio_get_level(CON2_GPIO));
