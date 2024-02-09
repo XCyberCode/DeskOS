@@ -6,16 +6,12 @@
 
 
 // Clear all matrix
-esp_err_t led_matrix_clear(led_strip_handle_t matrix_handle)
+void led_matrix_clear(led_strip_handle_t matrix_handle)
 {
-    for(int i = 0; i < MATRIX_HEIGHT * MATRIX_WIDTH; i++)
-    {
-        ESP_ERROR_CHECK(led_strip_set_pixel(matrix_handle, i, 0, 0, 0));
-    }
-    return ESP_OK;
+    led_matrix_fill(matrix_handle, 0, 0, 0);
 }
 
-esp_err_t led_matrix_draw_pixel(
+void led_matrix_draw_pixel(
     led_strip_handle_t matrix_handle, 
     uint16_t x, uint16_t y, 
     uint8_t red, uint8_t green, uint8_t blue )
@@ -34,10 +30,9 @@ esp_err_t led_matrix_draw_pixel(
             red, green, blue
         ));
     }
-    return ESP_OK;
 }
 
-esp_err_t led_matrix_draw_pixel_hsv(
+void led_matrix_draw_pixel_hsv(
     led_strip_handle_t matrix_handle, 
     uint16_t x, uint16_t y, 
     uint16_t hue, uint8_t saturation, uint8_t brightness
@@ -59,10 +54,9 @@ esp_err_t led_matrix_draw_pixel_hsv(
             hue, saturation, brightness
         ));
     }
-    return ESP_OK;
 }
 
-esp_err_t led_matrix_draw_h_line(
+void led_matrix_draw_h_line(
     led_strip_handle_t matrix_handle,        // Matrix handle
     uint16_t x, uint16_t y, uint16_t length, // Line properties
     uint8_t red, uint8_t green, uint8_t blue
@@ -70,12 +64,11 @@ esp_err_t led_matrix_draw_h_line(
 {
     for(int pixel = 0; pixel < length; pixel++)
     {
-        ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x + pixel, y, red, green, blue));
+        led_matrix_draw_pixel(matrix_handle, x + pixel, y, red, green, blue);
     }
-    return ESP_OK;
 }
 
-esp_err_t led_matrix_draw_v_line(
+void led_matrix_draw_v_line(
     led_strip_handle_t matrix_handle, 
     uint16_t x, uint16_t y, uint16_t length, 
     uint8_t red, uint8_t green, uint8_t blue
@@ -83,12 +76,11 @@ esp_err_t led_matrix_draw_v_line(
 {
     for(int pixel = 0; pixel < length; pixel++)
     {
-        ESP_ERROR_CHECK(led_matrix_draw_pixel(matrix_handle, x, y + pixel, red, green, blue));
+        led_matrix_draw_pixel(matrix_handle, x, y + pixel, red, green, blue);
     }
-    return ESP_OK;
 }
 
-esp_err_t led_matrix_draw_d_line
+void led_matrix_draw_d_line
 (
     led_strip_handle_t matrix_handle,
     uint16_t y, uint16_t length,
@@ -100,26 +92,25 @@ esp_err_t led_matrix_draw_d_line
     {
         for(int y_axis = y; y_axis <= y + length - 1; y_axis++)
         {
-            ESP_ERROR_CHECK(led_matrix_draw_pixel(
+            led_matrix_draw_pixel(
                 matrix_handle, y_axis, y_axis, 
                 red, green, blue
-            ));
+            );
         }
     }
     else
     {
         for(int y_axis = y; y_axis >= y - length; y_axis--)
         {
-            ESP_ERROR_CHECK(led_matrix_draw_pixel(
+            led_matrix_draw_pixel(
                 matrix_handle, y_axis, y_axis, 
                 red, green, blue
-            ));
+            );
         }
     }
-    return ESP_OK;
 }
 
-esp_err_t led_matrix_fill
+void led_matrix_fill
 (
     led_strip_handle_t matrix_handle,
     uint8_t red, uint8_t green, uint8_t blue
@@ -133,10 +124,9 @@ esp_err_t led_matrix_fill
             red, green, blue
         ));
     }
-    return ESP_OK;
 }
 
-esp_err_t led_matrix_fill_hsv
+void led_matrix_fill_hsv
 (
     led_strip_handle_t matrix_handle,
     uint16_t hue, uint8_t saturation, uint8_t value
@@ -150,10 +140,9 @@ esp_err_t led_matrix_fill_hsv
             hue, saturation, value
         ));
     }
-    return ESP_OK;
 }
 
-esp_err_t led_matrix_draw_v_line_hsv
+void led_matrix_draw_v_line_hsv
 (
     led_strip_handle_t matrix_handle, 
     uint16_t x, uint16_t y, uint16_t length, 
@@ -162,16 +151,15 @@ esp_err_t led_matrix_draw_v_line_hsv
 {
     for(int pixel = 0; pixel < length; pixel++)
     {
-        ESP_ERROR_CHECK(led_matrix_draw_pixel_hsv
+        led_matrix_draw_pixel_hsv
         (
             matrix_handle, x, y + pixel, 
             hue, saturation, brightness
-        ));
+        );
     }
-    return ESP_OK;
 }
 
-esp_err_t led_matrix_draw_h_line_hsv
+void led_matrix_draw_h_line_hsv
 (
     led_strip_handle_t matrix_handle,        // Matrix handle
     uint16_t x, uint16_t y, uint16_t length, // Line properties
@@ -180,11 +168,10 @@ esp_err_t led_matrix_draw_h_line_hsv
 {
     for(int pixel = 0; pixel < length; pixel++)
     {
-        ESP_ERROR_CHECK(led_matrix_draw_pixel_hsv
+        led_matrix_draw_pixel_hsv
         (
             matrix_handle, x + pixel, y, 
             hue, saturation, brightness
-        ));
+        );
     }
-    return ESP_OK;
 }
