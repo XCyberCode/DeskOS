@@ -7,16 +7,6 @@
 // Include external libaries
 #include <led_strip.h>
 
-// Matrix methods
-
-// Draw a vertical line
-// @param matrix_handle handler of the matrix
-// @param x horizontal position
-// @param y vertical position
-// @param length length of the line 
-// @param red red color
-// @param green green color
-// @param blue blue color
 esp_err_t led_matrix_draw_v_line
 (
     led_strip_handle_t matrix_handle, 
