@@ -23,6 +23,9 @@
 // 2 - effect_bouncing_ball
 #define DEFAULT_EFFECT 0
 
+// Climate sensors update delay (milliseconds)
+#define SENSORS_UPDATE_DELAY 1000 * 30
+
 // Number of effects
 #define EFFECTS_AMOUNT 3
 
