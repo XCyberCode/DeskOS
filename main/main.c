@@ -1,3 +1,5 @@
+// The Project MATRIXED, 2024
+
 // Include internal libraries
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -20,7 +22,10 @@ nvs_handle_t nvs_storage_handle;
 
 void app_main(void) 
 {
+    // Prepare variables
     uint8_t current_effect = DEFAULT_EFFECT;
+    uint8_t matrix_brightness = DEFAULT_BRIGHTNESS;
+
     // Configure hardware
     led_strip_config_t strip_config = {
         .strip_gpio_num = MCON1_GPIO,
@@ -44,7 +49,7 @@ void app_main(void)
     ESP_ERROR_CHECK(gpio_set_direction(CON2_GPIO, GPIO_MODE_INPUT));
     ESP_ERROR_CHECK(gpio_set_direction(CON3_GPIO, GPIO_MODE_INPUT));
 
-    // Initialize NVS storage
+    // Initialize NVS subsystem
     esp_err_t nvs_err = nvs_flash_init();
     if(nvs_err == ESP_ERR_NVS_NO_FREE_PAGES || nvs_err == ESP_ERR_NVS_NEW_VERSION_FOUND)
     {
@@ -53,21 +58,32 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(nvs_err);
 
-    // Open NVS storage for RW
+    // Open NVS for RW
     ESP_ERROR_CHECK(nvs_open("settings", NVS_READWRITE, &nvs_storage_handle));
 
     // Check initialization state
     uint8_t device_init_state;
     nvs_err = nvs_get_u8(nvs_storage_handle, "init_state", &device_init_state);
-    if(nvs_err == ESP_OK && !device_init_state)
+    if(nvs_err == ESP_OK)
     {
-        setup_device(matrix_handle, nvs_storage_handle);
+        // Check device init state
+        if(!device_init_state)
+        {
+            // Proceed setup
+            setup_device(matrix_handle, nvs_storage_handle);
+        }
+
+        // Set variables values
+        ESP_ERROR_CHECK(nvs_get_i8(nvs_storage_handle, "brightness", &matrix_brightness));
     }
+    // Check NVS entry existance
     else if(nvs_err == ESP_ERR_NVS_NOT_FOUND)
     {
+        // Begin setup
         setup_device(matrix_handle, nvs_storage_handle);
     }
 
+    // TODO: Move all of this code to the dedicated file
     while(1)
     {
         if(current_effect == 0)
