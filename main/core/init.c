@@ -8,8 +8,8 @@
 void setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_handle)
 {
     ESP_ERROR_CHECK(nvs_set_u8(nvs_storage_handle, "init_state", 0));
-
     uint8_t matrix_brightness = DEFAULT_BRIGHTNESS;
+    
     while(1)
     {
         led_matrix_draw_rect(matrix_handle, 0, 0, 8, 8, matrix_brightness * 10, matrix_brightness * 10, matrix_brightness * 10);
