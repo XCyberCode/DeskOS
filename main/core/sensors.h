@@ -1,7 +1,11 @@
 // Prevent reinclude
 #pragma once
 
-// Include internal components
-#include <driver/gpio.h>
+// Include internal libraries
+#include <inttypes.h>
 
-void update_sensors()
+void update_sensors();
+int16_t sensor_get_temp();
+uint8_t sensor_get_humidity();
+uint16_t sensor_get_pressure();
+uint16_t sensor_get_altitude();
