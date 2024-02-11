@@ -1,5 +1,7 @@
 // Prevent reinclude
-#pragma once
+#ifndef LED_MATRIX_HEADER_FLAG
+#define LED_MATRIX_HEADER_FLAG
+
 // Include external libaries
 #include <led_strip.h>
 
@@ -76,3 +78,4 @@ void led_matrix_draw_rect_hsv
     uint16_t width, uint16_t height,
     uint16_t hue, uint8_t saturation, uint8_t brightness
 );
+#endif
