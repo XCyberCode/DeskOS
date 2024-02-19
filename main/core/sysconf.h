@@ -28,6 +28,3 @@
 
 // Number of effects
 #define EFFECTS_AMOUNT 3
-
-// Deep configuration
-#define ESP_ERR_BUTTON_INTERRUPT 0x10E
