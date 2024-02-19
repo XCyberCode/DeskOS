@@ -1,10 +1,6 @@
 // Include header file
 #include <init.h>
 
-// Include core components
-#include <sysconf.h>
-#include <led_matrix.h>
-
 void setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_handle)
 {
     ESP_ERROR_CHECK(nvs_set_u8(nvs_storage_handle, "init_state", 0));

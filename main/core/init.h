@@ -11,5 +11,9 @@
 // Include external libraries
 #include <led_strip.h>
 
+// Include core components
+#include <sysconf.h>
+#include <led_matrix.h>
+
 void setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_handle);
 #endif
