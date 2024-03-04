@@ -1,5 +1,5 @@
 .vscode/settings.json
 build
-sdkconfig*
+sdkconfig.*
 managed_components
 dependencies.lock
