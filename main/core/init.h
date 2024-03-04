@@ -7,6 +7,7 @@
 #include <nvs.h>
 #include <nvs_flash.h>
 #include <driver/gpio.h>
+#include <driver/i2c_master.h>
 
 // Include external libraries
 #include <led_strip.h>
