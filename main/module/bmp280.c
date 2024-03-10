@@ -1,27 +1,32 @@
 // Include header file
 #include <bmp280.h>
 
-esp_err_t bmp280_init(bmx_config_t sensor_config) 
+esp_err_t bmp_init(bmp_config_t sensor_config) 
 {
     return ESP_OK;
 }
 
-esp_err_t bmp280_get_temperature(bmx_config_t sensor_config, int16_t *temperature) 
+esp_err_t bmp_get_temperature(bmp_config_t sensor_config, int16_t *temperature) 
 {
     return ESP_OK;
 }
 
-esp_err_t bmp280_get_pressure(bmx_config_t sensor_config, uint16_t *pressure) 
+esp_err_t bmp_get_pressure(bmp_config_t sensor_config, uint16_t *pressure) 
 {
     return ESP_OK;
 }
 
-esp_err_t bmp280_get_altitude(bmx_config_t sensor_config, uint16_t *altitude) 
+esp_err_t bmp_get_altitude(bmp_config_t sensor_config, uint16_t *altitude) 
 {
     return ESP_OK;
 }
 
-esp_err_t bme280_get_humidity(bmx_config_t sensor_config, uint8_t *humidity) 
+esp_err_t bmp_get_humidity(bmp_config_t sensor_config, uint8_t *humidity) 
 {
+    if(sensor_config.type == SENSOR_TYPE_BMP280)
+    {
+        ESP_LOGE("bmp", "Invalid sensor type");
+        return ESP_ERR_INVALID_ARG;
+    }
     return ESP_OK;
 }
