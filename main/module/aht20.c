@@ -1,17 +1,17 @@
 // Include header file
 #include <aht20.h>
 
-esp_err_t aht20_init(ahtx_config_t aht20_config)
+esp_err_t aht_init(aht_config_t aht_config)
 {
     return ESP_OK;
 }
 
-esp_err_t aht20_get_temperature(ahtx_config_t aht20_config, int16_t *temperature)
+esp_err_t aht_get_temperature(aht_config_t aht_config, int16_t *temperature)
 {
     return ESP_OK;
 }
 
-esp_err_t aht20_get_humidity(ahtx_config_t aht20_config, uint8_t *humidity)
+esp_err_t aht_get_humidity(aht_config_t aht_config, uint8_t *humidity)
 {
     return ESP_OK;
 }

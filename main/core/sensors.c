@@ -21,10 +21,10 @@ void sensor_update_task(void * task_parameters)
         .device_address = SENSOR_AHTX0_ADDRESS,
         .scl_speed_hz = I2C_DEFAULT_SPEED_HZ
     };
-    ahtx_config_t aht_sensor_config = 
+    aht_config_t aht_sensor_config = 
     {
         .dev_bus_config = &aht_bus_config,
         .master_bus_handle = & i2c_master_bus_handle
     };
-    ESP_ERROR_CHECK(aht20_init(aht_sensor_config));
+    ESP_ERROR_CHECK(aht_init(aht_sensor_config));
 }
