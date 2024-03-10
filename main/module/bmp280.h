@@ -3,10 +3,12 @@
 #define LIB_BMP280_HEADER_FLAG
 
 // Include core components
-#include <driver/i2c.h>
+#include <driver/i2c_master.h>
+#include <esp_err.h>
+#include <esp_log.h>
 
 // ================================================
-//  Naming of the components:
+//  Naming rules:
 //  bmp* or bmx* - works on both BMP280 and BME280
 //  bme* - works only on BME280
 // ================================================
@@ -72,12 +74,13 @@ typedef enum
 
 // Sensor configuration structure
 typedef struct {
-    i2c_config_t bus_config;            // I2C configuration
-    bmx_sensor_type_t type;             // Type of the sensor: BMP280 or BME280
-    bmp280_mode_t mode;                 // Working mode of the sensor
-    bmp280_filtering_t filter;          // Sensor measurement filtering
-    bmp280_oversampling_t oversampling; // Sensor measurement oversampling
-    bmp280_delaying_t standby;          // Delay between measurements
+    i2c_master_bus_handle_t *bus_handle; // Preconfigured I2C bus handle
+    i2c_device_config_t *dev_bus_config; // I2C device configuration
+    bmx_sensor_type_t type;              // Type of the sensor: BMP280 or BME280
+    bmp280_mode_t mode;                  // Working mode of the sensor
+    bmp280_filtering_t filter;           // Sensor measurement filtering
+    bmp280_oversampling_t oversampling;  // Sensor measurement oversampling
+    bmp280_delaying_t standby;           // Delay between measurements
 } bmx_config_t;
 
 // =================
@@ -86,25 +89,25 @@ typedef struct {
 
 // Initialize the sensor
 // @param sensor_config structure with sensor configuration
-void bmp280_init(bmx_config_t sensor_config);
+esp_err_t bmp280_init(bmx_config_t sensor_config);
 
 // Read temperature from the sensor
 // @param sensor_config sensor configuration structure
 // @param *temperature pointer to the temperature variable
-void bmp280_get_temperature(bmx_config_t sensor_config, int16_t *temperature);
+esp_err_t bmp280_get_temperature(bmx_config_t sensor_config, int16_t *temperature);
 
 // Read pressure from the sensor
 // @param sensor_config sensor configuration structure
 // @param *pressure pointer to the pressure variable
-void bmp280_get_humidity(bmx_config_t sensor_config, uint16_t *pressure);
+esp_err_t bmp280_get_humidity(bmx_config_t sensor_config, uint16_t *pressure);
 
 // Read pressure from the sensor and convert it to the altitude
 // @param sensor_config sensor configuration structure
 // @param *altitude output pointer to the altitude variable
-void bmp280_get_altitude(bmx_config_t sensor_config, uint16_t *altitude);
+esp_err_t bmp280_get_altitude(bmx_config_t sensor_config, uint16_t *altitude);
 
 // Get humidity (bme280 only)
 // @param sensor_config sensor configuration structure
 // @param *humidity pointer to humidity variable
-void bme280_get_humidity(bmx_config_t sensor_config, uint8_t *humidity);
+esp_err_t bme280_get_humidity(bmx_config_t sensor_config, uint8_t *humidity);
 #endif
