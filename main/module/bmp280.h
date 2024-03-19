@@ -67,7 +67,7 @@ typedef enum
 
 // Sensor configuration structure
 typedef struct {
-    i2c_master_bus_handle_t *bus_handle; // Preconfigured I2C bus handle
+    i2c_master_dev_handle_t *dev_handle; // Bus device handle
     i2c_device_config_t *dev_bus_config; // I2C device configuration
     bmp_sensor_type_t type;              // Type of the sensor: BMP280 or BME280
     bmp_mode_t mode;                  // Working mode of the sensor

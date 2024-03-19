@@ -10,7 +10,7 @@
 // Sensor configuration structure
 typedef struct
 {
-    i2c_master_bus_handle_t *master_bus_handle; // Preconfigured I2C bus handle
+    i2c_master_dev_handle_t *master_bus_handle; // Preconfigured I2C bus handle
     i2c_device_config_t *dev_bus_config;        // I2C device configuration
 } aht_config_t;
 

@@ -15,6 +15,7 @@
 #include <led_matrix.h>
 #include <init.h>
 #include <effects.h>
+#include <sensors.h>
 
 // Global variables
 led_strip_handle_t matrix_handle;
@@ -85,7 +86,9 @@ void app_main(void)
         setup_device(matrix_handle, nvs_storage_handle);
     }
 
-    // TODO: Move all of this code to the dedicated file
+    xTaskCreate(sensor_update_task, "sensors", 4096, NULL, 1, NULL);
+
+    // TODO: Move all of this stuff to the dedicated file
     while(1)
     {
         if(current_effect == 0)

@@ -3,6 +3,18 @@
 
 esp_err_t bmp_init(bmp_config_t sensor_config) 
 {
+    uint16_t chip_id = 0;
+    uint8_t chip_id_buffer[1];
+    uint8_t chip_id_send_data[1] = {0xFA};
+    ESP_ERROR_CHECK(i2c_master_transmit_receive(
+        *sensor_config.dev_handle, 
+        chip_id_send_data, 
+        1, 
+        chip_id_buffer, 
+        1, 
+        -1
+    ));
+    chip_id = chip_id_buffer[0];
     return ESP_OK;
 }
 

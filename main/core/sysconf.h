@@ -38,7 +38,7 @@
 #define SENSORS_UPDATE_DELAY 1000 * 30
 
 // Set sensors address
-#define SENSOR_BMPX80_ADDRESS 0x00
+#define SENSOR_BMPX80_ADDRESS 0x77
 #define SENSOR_AHTX0_ADDRESS 0x00
 
 // Configure I2C bus

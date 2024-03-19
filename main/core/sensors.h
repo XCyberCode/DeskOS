@@ -9,9 +9,9 @@
 #include <aht20.h>
 #include <bmp280.h>
 
-void sensors_update_task(void * task_parameters);
-void sensor_get_temp(int16_t * temperature);
-void sensor_get_humidity(uint8_t * humidity);
-void sensor_get_pressure(uint16_t * pressure);
-void sensor_get_altitude(uint16_t * altitude);
+void sensor_update_task(void *pvParameters);
+void sensor_get_temp(int16_t *temperature);
+void sensor_get_humidity(uint8_t *humidity);
+void sensor_get_pressure(uint16_t *pressure);
+void sensor_get_altitude(uint16_t *altitude);
 #endif
