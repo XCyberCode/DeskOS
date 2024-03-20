@@ -20,7 +20,7 @@
 #define BMP280_REG_RESET       0xE0
 #define BMP280_REG_CHIP_ID     0xD0
 #define BMP280_REG_CALIBRATE   0x88
-// #define BMP280_RESET_VALUE  0xB6
+#define BMP280_RESET_VALUE     0xB6
 
 // =======================
 //  CONFIGURATION SECTION
@@ -95,7 +95,7 @@ typedef struct {
     int16_t P9;
 } bmp_calibration_data_t;
 
-// Sensor configuration structure
+// Structure containing the sensor configuration 
 typedef struct {
     i2c_master_dev_handle_t dev_handle;  // Bus device handler
     bmp_sensor_type_t type;              // Type of the sensor: BMP280 or BME280
@@ -104,36 +104,51 @@ typedef struct {
     bmp_oversampling_t osrs_temp;     // Temperature oversampling
     bmp_oversampling_t osrs_press;    // Pressure oversampling
     bmp_delaying_t standby_time;           // Delay between measurements
-    bmp_calibration_data_t calibation_data;
+    bmp_calibration_data_t calibration_data;
 } bmp_config_t;
 
 // =================
 //  METHODS SECTION 
 // =================
 
-// Initialize the sensor
-// @param sensor_config structure with sensor configuration
+// Internal method. Compensate raw pressure data using formula
+// @param sensor_config structure containing the sensor configuration 
+// @param raw_pressure raw pressure data
+// @param raw_temp raw temperature data (t_fine)
+// @param *pressure pointer to the pressure variable
+void bmp_compensate_pressure(bmp_config_t sensor_config, int32_t raw_pressure, int32_t raw_temp, double *pressure);
+
+// Internal method. Compensate raw pressure data using formula
+// @param sensor_config structure containing the sensor configuration 
+// @param raw_temp raw temperature data (t_fine)
+// @param *pressure pointer to the pressure variable
+void bmp_compensate_temperature(bmp_config_t sensor_config, int32_t raw_temp, int32_t *temperature);
+
+// Internal method. Read compensation values (T1, ..., T3 and P1, ..., P9)
+// @param *sensor_config structure containing the sensor configuration
+esp_err_t bmp_read_calibration_data(bmp_config_t *sensor_config);
+
+// Initialize the sensor using configuration structure
+// @param sensor_config structure containing the sensor configuration 
 esp_err_t bmp_init(bmp_config_t *sensor_config);
 
 // Read temperature from the sensor
-// @param sensor_config sensor configuration structure
+// @param sensor_config structure containing the sensor configuration 
 // @param *temperature pointer to the temperature variable
-esp_err_t bmp_get_temperature(bmp_config_t sensor_config, int16_t *temperature);
+esp_err_t bmp_read_temperature(bmp_config_t sensor_config, double *temperature);
 
 // Read pressure from the sensor
-// @param sensor_config sensor configuration structure
+// @param sensor_config structure containing the sensor configuration 
 // @param *pressure pointer to the pressure variable
-esp_err_t bmp_get_pressure(bmp_config_t sensor_config, uint16_t *pressure);
+esp_err_t bmp_read_pressure(bmp_config_t sensor_config, double *pressure);
 
 // Read pressure from the sensor and convert it to the altitude
-// @param sensor_config sensor configuration structure
+// @param sensor_config structure containing the sensor configuration 
 // @param *altitude output pointer to the altitude variable
 esp_err_t bmp_get_altitude(bmp_config_t sensor_config, uint16_t *altitude);
 
-// Get humidity (bme280 only)
-// @param sensor_config sensor configuration structure
+// Get humidity (bme280 only). WIP
+// @param sensor_config structure containing the sensor configuration 
 // @param *humidity pointer to humidity variable
-esp_err_t bmp_get_humidity(bmp_config_t sensor_config, uint8_t *humidity);
-
-esp_err_t bmp_read_calibration_data(bmp_config_t *sensor_config);
+esp_err_t bmp_read_humidity(bmp_config_t sensor_config, uint8_t *humidity);
 #endif

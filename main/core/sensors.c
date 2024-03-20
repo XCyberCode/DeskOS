@@ -32,16 +32,21 @@ void sensor_update_task(void *pvParameters)
         .dev_handle = bmp_handle,
         .type = SENSOR_TYPE_BMP280,
         .mode = BMP280_MODE_NORMAL,
-        .osrs_press = BMP280_OSRS_ULTRA,
-        .osrs_temp = BMP280_OSRS_LOW,
-        .filter = BMP280_FILTER_X4,
+        .osrs_press = BMP280_OSRS_STANDARD,
+        .osrs_temp = BMP280_OSRS_ULTRA_LOW,
+        .filter = BMP280_FILTER_X8,
         .standby_time = BMP280_DELAY_250MS
     };
     bmp_init(&bmp_config);
-    ESP_LOGI("sensors", "Preparing sensor checking...");
-    ESP_LOGI("sensors", "P2 value is %d", bmp_config.calibation_data.P2);
+    
+    double current_temperature = 0;
+    double current_pressure = 0;
     while(1)
     {
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        bmp_read_temperature(bmp_config, &current_temperature);
+        bmp_read_pressure(bmp_config, &current_pressure);
+        ESP_LOGI("sensors", "Current temperature is %fC", current_temperature);
+        ESP_LOGI("sensors", "Current pressure is %fPa", current_pressure);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     };
 }
