@@ -8,6 +8,7 @@
 // Include core components
 #include <aht20.h>
 #include <bmp280.h>
+#include <freertos/FreeRTOS.h>
 
 void sensor_update_task(void *pvParameters);
 void sensor_get_temp(int16_t *temperature);

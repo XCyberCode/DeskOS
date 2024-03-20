@@ -29,11 +29,19 @@ void sensor_update_task(void *pvParameters)
 
     bmp_config_t bmp_config = 
     {
-        .dev_bus_config = &bmp_dev_config,
-        .dev_handle = &bmp_handle,
+        .dev_handle = bmp_handle,
         .type = SENSOR_TYPE_BMP280,
-        .mode = BMP280_MODE_NORMAL
+        .mode = BMP280_MODE_NORMAL,
+        .osrs_press = BMP280_OSRS_ULTRA,
+        .osrs_temp = BMP280_OSRS_LOW,
+        .filter = BMP280_FILTER_X4,
+        .standby_time = BMP280_DELAY_250MS
     };
-    bmp_init(bmp_config);
-    while(1);
+    bmp_init(&bmp_config);
+    ESP_LOGI("sensors", "Preparing sensor checking...");
+    ESP_LOGI("sensors", "P2 value is %d", bmp_config.calibation_data.P2);
+    while(1)
+    {
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+    };
 }

@@ -7,6 +7,21 @@
 #include <esp_err.h>
 #include <esp_log.h>
 
+// Define registers used in the sensor
+#define BMP280_REG_TEMP_XLSB   0xFC // Only 4 bits
+#define BMP280_REG_TEMP_LSB    0xFB
+#define BMP280_REG_TEMP_MSB    0xFA
+#define BMP280_REG_PRESS_XLSB  0xF9 // Only 4 bits
+#define BMP280_REG_PRESS_LSB   0xF8
+#define BMP280_REG_PRESS_MSB   0xF7
+#define BMP280_REG_CONFIG      0xF5 // Bits: t_sb: 7-5, filter: 4-2
+#define BMP280_REG_CONTROL     0xF4 // Bits: osrs_t: 7-5, osrs_p: 4-2, mode: 1-0
+#define BMP280_REG_STATUS      0xF3 // Bits: measuring: 3, im_update: 0
+#define BMP280_REG_RESET       0xE0
+#define BMP280_REG_CHIP_ID     0xD0
+#define BMP280_REG_CALIBRATE   0x88
+// #define BMP280_RESET_VALUE  0xB6
+
 // =======================
 //  CONFIGURATION SECTION
 // =======================
@@ -33,12 +48,12 @@ typedef enum {
 // Pressure oversampling (measurement quality)
 typedef enum
 {
-    BMP280_NO_OVERSAMPLE = 0, // No measurement -_-
-    BMP280_ULTRA_LOW = 1,     // Oversampling X1
-    BMP280_LOW = 2,           // Oversampling X2
-    BMP280_STANDARD = 3,      // Oversampling X4
-    BMP280_HIGH = 4,          // Oversampling X8
-    BMP280_ULTRA = 5          // Oversampling X16
+    BMP280_OSRS_NO_OVERSAMPLE = 0, // No measurement
+    BMP280_OSRS_ULTRA_LOW = 1,     // Oversampling X1
+    BMP280_OSRS_LOW = 2,           // Oversampling X2
+    BMP280_OSRS_STANDARD = 3,      // Oversampling X4
+    BMP280_OSRS_HIGH = 4,          // Oversampling X8
+    BMP280_OSRS_ULTRA = 5          // Oversampling X16
 } bmp_oversampling_t;
 
 // Data filtering
@@ -65,15 +80,31 @@ typedef enum
     BMP280_DELAY_4S = 7     // 4 seconds
 } bmp_delaying_t;
 
+typedef struct {
+    uint16_t T1;
+    int16_t T2;
+    int16_t T3;
+    uint16_t P1;
+    int16_t P2;
+    int16_t P3;
+    int16_t P4;
+    int16_t P5;
+    int16_t P6;
+    int16_t P7;
+    int16_t P8;
+    int16_t P9;
+} bmp_calibration_data_t;
+
 // Sensor configuration structure
 typedef struct {
-    i2c_master_dev_handle_t *dev_handle; // Bus device handle
-    i2c_device_config_t *dev_bus_config; // I2C device configuration
+    i2c_master_dev_handle_t dev_handle;  // Bus device handler
     bmp_sensor_type_t type;              // Type of the sensor: BMP280 or BME280
     bmp_mode_t mode;                  // Working mode of the sensor
     bmp_filtering_t filter;           // Sensor measurement filtering
-    bmp_oversampling_t oversampling;  // Sensor measurement oversampling
-    bmp_delaying_t standby;           // Delay between measurements
+    bmp_oversampling_t osrs_temp;     // Temperature oversampling
+    bmp_oversampling_t osrs_press;    // Pressure oversampling
+    bmp_delaying_t standby_time;           // Delay between measurements
+    bmp_calibration_data_t calibation_data;
 } bmp_config_t;
 
 // =================
@@ -82,7 +113,7 @@ typedef struct {
 
 // Initialize the sensor
 // @param sensor_config structure with sensor configuration
-esp_err_t bmp_init(bmp_config_t sensor_config);
+esp_err_t bmp_init(bmp_config_t *sensor_config);
 
 // Read temperature from the sensor
 // @param sensor_config sensor configuration structure
@@ -103,4 +134,6 @@ esp_err_t bmp_get_altitude(bmp_config_t sensor_config, uint16_t *altitude);
 // @param sensor_config sensor configuration structure
 // @param *humidity pointer to humidity variable
 esp_err_t bmp_get_humidity(bmp_config_t sensor_config, uint8_t *humidity);
+
+esp_err_t bmp_read_calibration_data(bmp_config_t *sensor_config);
 #endif
