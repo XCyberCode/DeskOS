@@ -14,6 +14,7 @@ void bmp_compensate_pressure(bmp_config_t sensor_config, int32_t raw_pressure, i
         ((double)sensor_config.calibration_data.P2) * calib_var1) / 524288.0;
     calib_var1 = (1.0 + calib_var1 / 32768.0) * ((double)sensor_config.calibration_data.P1);
     
+    // Prevent dividing by zero
     if (calib_var1 == 0.0) 
     {
         *pressure = 0;
@@ -82,17 +83,20 @@ esp_err_t bmp_init(bmp_config_t *sensor_config)
     transmit_data[1] = (sensor_config->standby_time << 5) | (sensor_config->filter << 2);
     ESP_LOGI("bmp", "Second packet: %d", transmit_data[1]);
     ESP_ERROR_CHECK(i2c_master_transmit(sensor_config->dev_handle, transmit_data, 2, -1));
+    
     // Configure oversampling and working mode
     transmit_data[0] = BMP280_REG_CONTROL;
     transmit_data[1] = (sensor_config->osrs_temp << 5) | (sensor_config->osrs_press << 2) | (sensor_config->mode);
     ESP_LOGI("bmp", "First packet: %d", transmit_data[1]);
     ESP_ERROR_CHECK(i2c_master_transmit(sensor_config->dev_handle, transmit_data, 2, -1));
 
+    // Return state
     return ESP_OK;
 }
 
 esp_err_t bmp_read_calibration_data(bmp_config_t *sensor_config)
 {
+    // Read calibration data. It is required for compensation of the measurements
     uint8_t transmit_data[1] = {BMP280_REG_CALIBRATE};
     uint8_t received_data[24];
     ESP_ERROR_CHECK(i2c_master_transmit(sensor_config->dev_handle, transmit_data, 1, -1));
@@ -141,19 +145,22 @@ esp_err_t bmp_read_temperature(bmp_config_t sensor_config, double *temperature)
 
 esp_err_t bmp_read_pressure(bmp_config_t sensor_config, double *pressure) 
 {
+    // Read processed temperature. It is required for pressure compensation
     int32_t raw_temp;
     ESP_ERROR_CHECK(bmp_read_raw_temperature(sensor_config, &raw_temp));
 
+    // Read raw pressure data from the sensor
     uint8_t transmit_data[1] = {BMP280_REG_PRESS_MSB};
     uint8_t received_data[3];
     ESP_ERROR_CHECK(i2c_master_transmit(sensor_config.dev_handle, transmit_data, 1, -1));
     ESP_ERROR_CHECK(i2c_master_receive(sensor_config.dev_handle, received_data, 3, -1));
-
-    int32_t raw_press = received_data[0];
+    int32_t raw_press = (received_data[0] << 16) | (received_data[1] << 8) | received_data[2];
     raw_press >>= 4;
 
+    // Compensate pressure using the formula
     bmp_compensate_pressure(sensor_config, raw_press, raw_temp, pressure);
 
+    // Return state
     return ESP_OK;
 }
 

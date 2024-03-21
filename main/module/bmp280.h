@@ -41,7 +41,7 @@ typedef enum
 // Normal - automatic measurements
 typedef enum {
     BMP280_MODE_SLEEP = 0,
-    BMP280_MODE_FORCED = 1,
+    BMP280_MODE_FORCED = 1, // It can be either 0x01 or 0x02
     BMP280_MODE_NORMAL = 3
 } bmp_mode_t;
 
@@ -80,6 +80,7 @@ typedef enum
     BMP280_DELAY_4S = 7     // 4 seconds
 } bmp_delaying_t;
 
+// Calibration data for results compensation
 typedef struct {
     uint16_t T1;
     int16_t T2;
@@ -97,13 +98,13 @@ typedef struct {
 
 // Structure containing the sensor configuration 
 typedef struct {
-    i2c_master_dev_handle_t dev_handle;  // Bus device handler
-    bmp_sensor_type_t type;              // Type of the sensor: BMP280 or BME280
-    bmp_mode_t mode;                  // Working mode of the sensor
-    bmp_filtering_t filter;           // Sensor measurement filtering
-    bmp_oversampling_t osrs_temp;     // Temperature oversampling
-    bmp_oversampling_t osrs_press;    // Pressure oversampling
-    bmp_delaying_t standby_time;           // Delay between measurements
+    i2c_master_dev_handle_t dev_handle; // Bus device handler
+    bmp_sensor_type_t type; // Type of the sensor: BMP280 or BME280
+    bmp_mode_t mode;        // Working mode of the sensor
+    bmp_filtering_t filter; // Sensor measurement filtering
+    bmp_oversampling_t osrs_temp;  // Temperature oversampling
+    bmp_oversampling_t osrs_press; // Pressure oversampling
+    bmp_delaying_t standby_time;   // Delay between measurements
     bmp_calibration_data_t calibration_data;
 } bmp_config_t;
 
@@ -111,14 +112,14 @@ typedef struct {
 //  METHODS SECTION 
 // =================
 
-// Internal method. Compensate raw pressure data using formula
+// Internal method. Compensate raw pressure data using the formula
 // @param sensor_config structure containing the sensor configuration 
 // @param raw_pressure raw pressure data
 // @param raw_temp raw temperature data (t_fine)
 // @param *pressure pointer to the pressure variable
 void bmp_compensate_pressure(bmp_config_t sensor_config, int32_t raw_pressure, int32_t raw_temp, double *pressure);
 
-// Internal method. Compensate raw pressure data using formula
+// Internal method. Compensate raw pressure data using the formula
 // @param sensor_config structure containing the sensor configuration 
 // @param raw_temp raw temperature data (t_fine)
 // @param *pressure pointer to the pressure variable
