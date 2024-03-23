@@ -4,7 +4,7 @@
 // Include core libraries
 #include <sysconf.h>
 
-void sensor_update_task(void *pvParameters)
+void sensor_update_task(void *task_parameters)
 {
     i2c_master_bus_config_t i2c_master_bus_config = {
         .sda_io_num = GPIO_NUM_21,
@@ -32,10 +32,10 @@ void sensor_update_task(void *pvParameters)
         .dev_handle = bmp_handle,
         .type = SENSOR_TYPE_BMP280,
         .mode = BMP280_MODE_NORMAL,
-        .osrs_press = BMP280_OSRS_STANDARD,
-        .osrs_temp = BMP280_OSRS_ULTRA_LOW,
-        .filter = BMP280_FILTER_X8,
-        .standby_time = BMP280_DELAY_250MS
+        .osrs_press = BMP280_OSRS_ULTRA,
+        .osrs_temp = BMP280_OSRS_LOW,
+        .filter = BMP280_FILTER_X16,
+        .standby_time = BMP280_DELAY_62MS
     };
     bmp_init(&bmp_config);
     
@@ -46,7 +46,7 @@ void sensor_update_task(void *pvParameters)
         bmp_read_temperature(bmp_config, &current_temperature);
         bmp_read_pressure(bmp_config, &current_pressure);
         ESP_LOGI("sensors", "Current temperature is %fC", current_temperature);
-        ESP_LOGI("sensors", "Current pressure is %fPa", current_pressure);
+        ESP_LOGI("sensors", "Current pressure is %fmmHg", current_pressure * 0.0075);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     };
 }

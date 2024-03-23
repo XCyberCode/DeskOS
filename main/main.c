@@ -62,6 +62,6 @@ void app_main(void)
         
     }
 
-    // xTaskCreate(sensor_update_task, "sensors", 2048, (void*)&system_management, 1, NULL);
-    xTaskCreate(ui_update_task, "ui", 1024, (void*)&system_management, 1, NULL);
+    xTaskCreate(sensor_update_task, "sensors", 4096, (void*)&system_management, 1, NULL);
+    xTaskCreate(ui_update_task, "ui", 4096, (void*)&system_management, 1, NULL);
 }
