@@ -1,5 +1,5 @@
 // Include header file
-#include <init.h>
+#include <setup.h>
 
 void setup_device(led_strip_handle_t matrix_handle, nvs_handle_t nvs_storage_handle)
 {
