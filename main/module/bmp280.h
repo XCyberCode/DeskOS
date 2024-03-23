@@ -30,7 +30,7 @@
 // BMP280 can measure temperature and pressure
 // BME280 can measure temperature, pressure and humidity
 // BME680 can measure temperature, pressure, humidity and air quality 
-typedef enum 
+typedef enum bmp_sensor_type_t
 {
     SENSOR_TYPE_BMP280 = 0,
     SENSOR_TYPE_BME280 = 1
@@ -39,14 +39,15 @@ typedef enum
 // Working mode of the sensor
 // Forced - manual measurements (initiated by user)
 // Normal - automatic measurements
-typedef enum {
+typedef enum bmp_mode_t 
+{
     BMP280_MODE_SLEEP = 0,
     BMP280_MODE_FORCED = 1, // It can be either 0x01 or 0x02
     BMP280_MODE_NORMAL = 3
 } bmp_mode_t;
 
 // Pressure oversampling (measurement quality)
-typedef enum
+typedef enum bmp_oversampling_t
 {
     BMP280_OSRS_NO_OVERSAMPLE = 0, // No measurement
     BMP280_OSRS_ULTRA_LOW = 1,     // Oversampling X1
@@ -68,7 +69,7 @@ typedef enum
 } bmp_filtering_t;
 
 // Delay between measurements
-typedef enum 
+typedef enum bmp_delaying_t
 {
     BMP280_DELAY_500NS = 0, // 0.5 milliseconds (500 nanoseconds)
     BMP280_DELAY_62MS = 1,  // 62.5 milliseconds
@@ -81,7 +82,8 @@ typedef enum
 } bmp_delaying_t;
 
 // Calibration data for results compensation
-typedef struct {
+typedef struct bmp_calibration_data_t 
+{
     uint16_t T1;
     int16_t T2;
     int16_t T3;
@@ -97,7 +99,7 @@ typedef struct {
 } bmp_calibration_data_t;
 
 // Structure containing the sensor configuration 
-typedef struct {
+typedef struct bmp_config_t {
     i2c_master_dev_handle_t dev_handle; // Bus device handler
     bmp_sensor_type_t type; // Type of the sensor: BMP280 or BME280
     bmp_mode_t mode;        // Working mode of the sensor
