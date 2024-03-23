@@ -2,9 +2,9 @@
 
 // Include internal libraries
 #include <freertos/FreeRTOS.h>
+#include <freertos/queue.h>
 #include <freertos/task.h>
 #include <driver/gpio.h>
-#include <nvs.h>
 #include <nvs_flash.h>
 
 // Include external libraries
@@ -13,42 +13,29 @@
 // Include core components
 #include <sysconf.h>
 #include <led_matrix.h>
-#include <init.h>
+#include <setup.h>
 #include <effects.h>
 #include <sensors.h>
+#include <manager.h>
 
-// Global variables
-led_strip_handle_t matrix_handle;
-nvs_handle_t nvs_storage_handle;
+struct sys_management_t system_management;
+nvs_handle_t system_nvs_handle;
+led_strip_handle_t system_led_strip_handle;
+QueueHandle_t system_temperature_queue;
+QueueHandle_t system_pressure_queue;
 
 void app_main(void) 
 {
-    // Prepare variables
-    uint8_t current_effect = DEFAULT_EFFECT;
-    uint8_t matrix_brightness = DEFAULT_BRIGHTNESS;
-
-    // Configure hardware
-    led_strip_config_t strip_config = {
-        .strip_gpio_num = MCON1_GPIO,
-        .max_leds = MATRIX_AREA,
-        .led_pixel_format = LED_PIXEL_FORMAT_GRB,
-        .led_model = LED_MODEL_WS2812,
-        .flags.invert_out = false,
-    };
-
-    led_strip_rmt_config_t rmt_config = {
-        .clk_src = RMT_CLK_SRC_DEFAULT,
-        .resolution_hz = 10 * 1000 * 1000, // 10MHz
-        .flags.with_dma = false,
-    };
-
-    // Initialize led matrix
-    ESP_ERROR_CHECK(led_strip_new_rmt_device(&strip_config, &rmt_config, &matrix_handle));
-
     // Initialize GPIOS
     ESP_ERROR_CHECK(gpio_set_direction(CON1_GPIO, GPIO_MODE_INPUT));
     ESP_ERROR_CHECK(gpio_set_direction(CON2_GPIO, GPIO_MODE_INPUT));
     ESP_ERROR_CHECK(gpio_set_direction(CON3_GPIO, GPIO_MODE_INPUT));
+
+    system_management.nvs_handle = &system_nvs_handle;
+    system_management.matrix_handle = &system_led_strip_handle;
+    system_management.temperature_queue = &system_temperature_queue;
+    system_management.pressure_queue = &system_pressure_queue;
+    system_management.hello_datatype = 1;
 
     // Initialize NVS subsystem
     esp_err_t nvs_err = nvs_flash_init();
@@ -60,59 +47,21 @@ void app_main(void)
     ESP_ERROR_CHECK(nvs_err);
 
     // Open NVS for RW
-    ESP_ERROR_CHECK(nvs_open("settings", NVS_READWRITE, &nvs_storage_handle));
+    ESP_ERROR_CHECK(nvs_open("settings", NVS_READWRITE, &system_nvs_handle));
 
     // Check initialization state
     uint8_t device_init_state;
-    nvs_err = nvs_get_u8(nvs_storage_handle, "init_state", &device_init_state);
+    nvs_err = nvs_get_u8(system_nvs_handle, "init_state", &device_init_state);
     if(nvs_err == ESP_OK)
     {
-        // Check device init state
-        if(!device_init_state)
-        {
-            // Proceed setup
-            setup_device(matrix_handle, nvs_storage_handle);
-        }
-        else
-        {
-            // Set variables values
-            nvs_get_u8(nvs_storage_handle, "brightness", &matrix_brightness);
-        }
+        
     }
     // Check NVS entry existance
     else if(nvs_err == ESP_ERR_NVS_NOT_FOUND)
     {
-        // Begin setup
-        setup_device(matrix_handle, nvs_storage_handle);
-    }
-
-    xTaskCreate(sensor_update_task, "sensors", 4096, NULL, 1, NULL);
-
-    // TODO: Move all of this stuff to the dedicated file
-    while(1)
-    {
-        if(current_effect == 0)
-        {
-            effect_hsv_rainbow(matrix_handle, matrix_brightness);
-        }
-        else if(current_effect == 1)
-        {
-            effect_linear_hsv_rainbow(matrix_handle, matrix_brightness);
-        }
-        else if(current_effect == 2)
-        {
-            effect_bouncing_ball(matrix_handle, matrix_brightness);
-        }
         
-        while(gpio_get_level(CON2_GPIO));
-
-        if(current_effect < EFFECTS_AMOUNT - 1)
-        {
-            current_effect++;
-        }
-        else
-        {
-            current_effect = 0;
-        }
     }
+
+    // xTaskCreate(sensor_update_task, "sensors", 2048, (void*)&system_management, 1, NULL);
+    xTaskCreate(ui_update_task, "ui", 1024, (void*)&system_management, 1, NULL);
 }

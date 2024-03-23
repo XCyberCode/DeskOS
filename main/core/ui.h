@@ -4,7 +4,15 @@
 // Include external libraries
 #include <led_strip.h>
 
-typedef struct 
+// Include internal libraries
+#include <esp_log.h>
+
+// Include core components
+#include <sysconf.h>
+#include <effects.h>
+#include <manager.h>
+
+typedef struct ui_elements_config_t
 {
     bool idleview_enabled;
     bool statview_enabled;
