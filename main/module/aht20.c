@@ -1,4 +1,4 @@
-// Include header file
+// Подключение заголовочного файла
 #include <aht20.h>
 
 esp_err_t aht_init(aht_config_t aht_config)

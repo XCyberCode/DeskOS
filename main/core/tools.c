@@ -1,4 +1,4 @@
-// Include header file
+// Подключение заголовочного файла
 #include <tools.h>
 
 int32_t fast_remap

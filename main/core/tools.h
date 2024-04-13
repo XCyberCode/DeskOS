@@ -1,8 +1,8 @@
-// Prevent reinclude
+// Защита заголовка (Include Guard)
 #ifndef CORE_TOOLS_HEADER_FLAG
 #define CORE_TOOLS_HEADER_FLAG
 
-// Include internal libraries
+// Подключение внутренних библиотек фреймворка
 #include <inttypes.h>
 
 int32_t fast_remap(

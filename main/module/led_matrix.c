@@ -1,4 +1,4 @@
-// Include header file
+// Подключение заголовочного файла
 #include <led_matrix.h>
 
 // Include core components

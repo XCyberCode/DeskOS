@@ -1,14 +1,14 @@
-// Prevent reinclude
+// Защита заголовка (Include Guard)
 #ifndef CORE_EFFECTS_HEADER_FLAG
 #define CORE_EFFECTS_HEADER_FLAG
 
-// Include internal libraries
+// Подключение внутренних библиотек фреймворка
 #include <esp_err.h>
 
 // Include external libraries
 #include <led_strip.h>
 
-// Include core componenets
+// Подключение компонентов системы
 #include <led_matrix.h>
 #include <sysconf.h>
 #include <ui.h>

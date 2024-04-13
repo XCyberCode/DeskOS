@@ -1,8 +1,8 @@
-// Prevent reinclude
+// Защита заголовка (Include Guard)
 #ifndef CORE_SENSORS_HEADER_FLAG
 #define CORE_SENSORS_HEADER_FLAG
 
-// Include core components
+// Подключение компонентов системы
 #include <aht20.h>
 #include <bmp280.h>
 #include <freertos/FreeRTOS.h>

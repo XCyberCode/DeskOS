@@ -1,13 +1,14 @@
+// Защита заголовка (Include Guard)
 #ifndef CORE_UI_HEADER_FLAG
 #define CORE_UI_HEADER_FLAG
 
-// Include external libraries
+// Подключение внешних библиотек
 #include <led_strip.h>
 
-// Include internal libraries
+// Подключение внутренних библиотек фреймворка
 #include <esp_log.h>
 
-// Include core components
+// Подключение компонентов системы
 #include <sysconf.h>
 #include <effects.h>
 #include <manager.h>

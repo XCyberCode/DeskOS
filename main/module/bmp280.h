@@ -1,8 +1,8 @@
-// Prevent reinclude
+// Защита заголовка (Include Guard)
 #ifndef LIB_BMP280_HEADER_FLAG
 #define LIB_BMP280_HEADER_FLAG
 
-// Include core components
+// Импортирование компонентов системы
 #include <driver/i2c_master.h>
 #include <esp_err.h>
 #include <esp_log.h>

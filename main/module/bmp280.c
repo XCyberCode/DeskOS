@@ -1,4 +1,4 @@
-// Include header file
+// Подключение заголовочного файла
 #include <bmp280.h>
 
 void bmp_compensate_pressure(bmp_config_t sensor_config, int32_t raw_pressure, int32_t raw_temp, double *pressure)

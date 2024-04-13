@@ -18,11 +18,7 @@
 #include <sensors.h>
 #include <manager.h>
 
-struct sys_management_t system_management;
-nvs_handle_t system_nvs_handle;
-led_strip_handle_t system_led_strip_handle;
-QueueHandle_t system_temperature_queue;
-QueueHandle_t system_pressure_queue;
+struct sys_management_t sys_manager;
 
 void app_main(void) 
 {
@@ -30,12 +26,6 @@ void app_main(void)
     ESP_ERROR_CHECK(gpio_set_direction(CON1_GPIO, GPIO_MODE_INPUT));
     ESP_ERROR_CHECK(gpio_set_direction(CON2_GPIO, GPIO_MODE_INPUT));
     ESP_ERROR_CHECK(gpio_set_direction(CON3_GPIO, GPIO_MODE_INPUT));
-
-    system_management.nvs_handle = &system_nvs_handle;
-    system_management.matrix_handle = &system_led_strip_handle;
-    system_management.temperature_queue = &system_temperature_queue;
-    system_management.pressure_queue = &system_pressure_queue;
-    system_management.hello_datatype = 1;
 
     // Initialize NVS subsystem
     esp_err_t nvs_err = nvs_flash_init();
@@ -47,11 +37,11 @@ void app_main(void)
     ESP_ERROR_CHECK(nvs_err);
 
     // Open NVS for RW
-    ESP_ERROR_CHECK(nvs_open("settings", NVS_READWRITE, &system_nvs_handle));
+    ESP_ERROR_CHECK(nvs_open("settings", NVS_READWRITE, &sys_manager.nvs_handle));
 
     // Check initialization state
     uint8_t device_init_state;
-    nvs_err = nvs_get_u8(system_nvs_handle, "init_state", &device_init_state);
+    nvs_err = nvs_get_u8(sys_manager.nvs_handle, "init_state", &device_init_state);
     if(nvs_err == ESP_OK)
     {
         
@@ -62,6 +52,6 @@ void app_main(void)
         
     }
 
-    xTaskCreate(sensor_update_task, "sensors", 4096, (void*)&system_management, 1, NULL);
-    xTaskCreate(ui_update_task, "ui", 4096, (void*)&system_management, 1, NULL);
+    xTaskCreate(sensor_update_task, "sensors", 4096, (void*)&sys_manager, 1, NULL);
+    xTaskCreate(ui_update_task, "ui", 4096, (void*)&sys_manager, 1, NULL);
 }

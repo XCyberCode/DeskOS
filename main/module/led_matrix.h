@@ -1,4 +1,4 @@
-// Prevent reinclude
+// Защита заголовка (Include Guard)
 #ifndef LED_MATRIX_HEADER_FLAG
 #define LED_MATRIX_HEADER_FLAG
 

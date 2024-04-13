@@ -1,8 +1,8 @@
-// Prevent reinclude
+// Защита заголовка (Include Guard)
 #ifndef AHT20_HEADER_FLAG
 #define AHT20_HEADER_FLAG
 
-// Include core components
+// Импортирование компонентов системы
 #include <driver/i2c_master.h>
 #include <esp_err.h>
 #include <esp_log.h>

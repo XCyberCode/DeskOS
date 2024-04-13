@@ -1,8 +1,8 @@
-// Prevent reinclude
+// Защита заголовка (Include Guard)
 #ifndef CORE_INIT_HEADER_FLAG
 #define CORE_INIT_HEADER_FLAG
 
-// Include internal libraries
+// Подключение внутренних библиотек фреймворка
 #include <esp_err.h>
 #include <nvs.h>
 #include <nvs_flash.h>
@@ -12,7 +12,7 @@
 // Include external libraries
 #include <led_strip.h>
 
-// Include core components
+// Подключение компонентов системы
 #include <sysconf.h>
 #include <led_matrix.h>
 

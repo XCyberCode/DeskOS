@@ -1,4 +1,4 @@
-// Include header file
+// Подключение заголовочного файла
 #include <sensors.h>
 
 // Include core libraries
