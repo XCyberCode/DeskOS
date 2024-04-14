@@ -34,8 +34,8 @@
 #define ENABLE_EFFECT_LINEAR_RAINBOW 1
 #define ENABLE_EFFECT_BOUNCING_BALL 1
 
-// Climate sensors update delay (milliseconds)
-#define SENSORS_UPDATE_DELAY 1000 * 30
+// Climate sensors update delay in seconds
+#define SENSORS_UPDATE_DELAY 60*1
 
 // Set sensors address
 #define SENSOR_BMPX80_ADDRESS 0x77
