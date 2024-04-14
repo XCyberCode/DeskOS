@@ -35,7 +35,7 @@ void ui_update_task(void *task_parameters)
 
     // Инициализация светодиодной матрицы
     ESP_ERROR_CHECK(led_strip_new_rmt_device(&strip_config, &rmt_config, &sys_manager->matrix_handle));
-    ESP_LOGI("ui", "Starting is complete");
+    ESP_LOGI("ui", "Starting is completed.");
 
     while(1)
     {

@@ -17,25 +17,8 @@
 // Default brightness of the matrix
 #define DEFAULT_BRIGHTNESS 1 // From 1 ... 25
 
-// Default startup effect
-// Available effects:
-// 0 - effect_hsv_rainbow
-// 1 - effect_linear_hsv_rainbow
-// 2 - effect_bouncing_ball
-#define DEFAULT_EFFECT 0
-
-// TODO: Remove and replace
-// Number of effects
-#define EFFECTS_AMOUNT 3
-
-// === WIP ===
-// Enable or disable some effects
-#define ENABLE_EFFECT_RAINBOW 1
-#define ENABLE_EFFECT_LINEAR_RAINBOW 1
-#define ENABLE_EFFECT_BOUNCING_BALL 1
-
 // Climate sensors update delay in seconds
-#define SENSORS_UPDATE_DELAY 60*1
+#define SENSORS_UPDATE_DELAY 60*5
 
 // Set sensors address
 #define SENSOR_BMPX80_ADDRESS 0x77
