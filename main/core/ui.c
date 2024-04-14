@@ -1,9 +1,21 @@
 // Подключение заголовочного файла
 #include <ui.h>
 
+void draw_idleview(struct sys_management_t *sys_manager)
+{
+
+}
+void draw_statview(struct sys_management_t *sys_manager);
+void draw_dataview(struct sys_management_t *sys_manager)
+{
+    
+}
+void draw_overview(struct sys_management_t *sys_manager);
+
 void ui_update_task(void *task_parameters)
 {
     struct sys_management_t *sys_manager = task_parameters;
+    uint8_t current_uiw = 0;
     
     // Настройка параметров светодиодной матрицы
     led_strip_config_t strip_config = {
@@ -27,16 +39,6 @@ void ui_update_task(void *task_parameters)
 
     while(1)
     {
-        led_matrix_fill(sys_manager->matrix_handle, 255, 0, 0);
-        ESP_ERROR_CHECK(led_strip_refresh(sys_manager->matrix_handle));
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
-
-void draw_idleview(led_strip_handle_t matrix_handle);
-
-void draw_statview(led_strip_handle_t matrix_handle);
-
-void draw_dataview(led_strip_handle_t matrix_handle);
-
-void draw_overview(led_strip_handle_t matrix_handle);

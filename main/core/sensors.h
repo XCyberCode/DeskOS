@@ -7,6 +7,9 @@
 #include <bmp280.h>
 #include <freertos/FreeRTOS.h>
 #include <sysconf.h>
+#include <manager.h>
+#include <string.h>
+#include <esp_timer.h>
 
 void sensor_update_task(void *task_parameters);
 void sensor_get_temp(int16_t *temperature);

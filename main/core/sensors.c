@@ -1,11 +1,45 @@
 // Подключение заголовочного файла
 #include <sensors.h>
 
-// Include core libraries
-#include <sysconf.h>
+void sensor_write_queue(void *timer_parameters)
+{
+    struct sys_management_t *sys_manager = timer_parameters;
+    memcpy(
+        sys_manager->temperature_queue + 1, 
+        sys_manager->temperature_queue,
+        sys_manager->data_availability * sizeof(sys_manager->temperature_queue[0])
+    );
+    sys_manager->temperature_queue[0] = sys_manager->current_temperature;
+
+    memcpy(
+        sys_manager->pressure_queue + 1,
+        sys_manager->pressure_queue,
+        sys_manager->data_availability * sizeof(sys_manager->pressure_queue[0])
+    );
+    sys_manager->pressure_queue[0] = sys_manager->current_pressure * 0.0075;
+    
+    if(sys_manager->data_availability < 8)
+    {
+        sys_manager->data_availability++;
+    }
+    ESP_LOGI("sensors", "Measurements queue has been updated.");
+    ESP_LOGI("sensors", "New values: T-%d, P-%d", sys_manager->temperature_queue[0], sys_manager->pressure_queue[0]);
+    ESP_LOGI("sensors", "Current availability is %d.", sys_manager->data_availability);
+}
 
 void sensor_update_task(void *task_parameters)
 {
+    struct sys_management_t *sys_manager = task_parameters;
+
+    esp_timer_create_args_t sensor_queue_timer = 
+    {
+        .arg = task_parameters,
+        .callback = &sensor_write_queue,
+        .name = "sensor_queue"
+    };
+    esp_timer_handle_t sensor_queue_handle;
+    ESP_ERROR_CHECK(esp_timer_create(&sensor_queue_timer, &sensor_queue_handle));
+
     i2c_master_bus_config_t i2c_master_bus_config = {
         .sda_io_num = GPIO_NUM_21,
         .scl_io_num = GPIO_NUM_22,
@@ -15,7 +49,6 @@ void sensor_update_task(void *task_parameters)
         .flags.enable_internal_pullup = true,
     };
     i2c_master_bus_handle_t i2c_master_bus_handle;
-    
     ESP_ERROR_CHECK(i2c_new_master_bus(&i2c_master_bus_config, &i2c_master_bus_handle));
 
     i2c_device_config_t bmp_dev_config = 
@@ -41,12 +74,21 @@ void sensor_update_task(void *task_parameters)
     
     double current_temperature = 0;
     double current_pressure = 0;
+
+    bmp_read_temperature(bmp_config, &current_temperature);
+    sys_manager->current_temperature = current_temperature;
+    bmp_read_pressure(bmp_config, &current_pressure);
+    sys_manager->current_pressure = current_pressure;
+    sensor_write_queue(task_parameters);
+
+    ESP_ERROR_CHECK(esp_timer_start_periodic(sensor_queue_handle, 1000*1000*SENSORS_UPDATE_DELAY));
     while(1)
     {
         bmp_read_temperature(bmp_config, &current_temperature);
+        sys_manager->current_temperature = current_temperature;
+
         bmp_read_pressure(bmp_config, &current_pressure);
-        ESP_LOGI("sensors", "Current temperature is %fC", current_temperature);
-        ESP_LOGI("sensors", "Current pressure is %fmmHg", current_pressure * 0.0075);
+        sys_manager->current_pressure = current_pressure;
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     };
 }

@@ -2,20 +2,20 @@
 #ifndef CORE_MANAGER_HEADER_FLAG
 #define CORE_MANAGER_HEADER_FLAG
 
-// Include external libaries
+// Подключение внешних библиотек
 #include <led_strip.h>
 
 // Подключение компонентов системы
-#include <nvs_flash.h>
 #include <freertos/FreeRTOS.h>
-#include <freertos/queue.h>
 
-// System manipulation strcture
+// Структура для хранения необходимых системе данных
 typedef struct sys_management_t
 {
-    nvs_handle_t nvs_handle;
     led_strip_handle_t matrix_handle;
-    int16_t temperature_value;
-    uint16_t pressure_value;
+    int16_t temperature_queue[8];
+    int16_t current_temperature;
+    uint16_t pressure_queue[8];
+    uint16_t current_pressure;
+    uint8_t data_availability;
 } sys_management_t;
 #endif

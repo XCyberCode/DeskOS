@@ -7,6 +7,7 @@
 
 // Подключение внутренних библиотек фреймворка
 #include <esp_log.h>
+#include <esp_timer.h>
 
 // Подключение компонентов системы
 #include <sysconf.h>
@@ -22,8 +23,8 @@ typedef struct ui_elements_config_t
 } ui_elements_config_t;
 
 void ui_update_task(void *task_parameters);
-void draw_idleview(led_strip_handle_t matrix_handle);
-void draw_statview(led_strip_handle_t matrix_handle);
-void draw_dataview(led_strip_handle_t matrix_handle);
-void draw_overview(led_strip_handle_t matrix_handle);
+void draw_idleview(struct sys_management_t *sys_manager);
+void draw_statview(struct sys_management_t *sys_manager);
+void draw_dataview(struct sys_management_t *sys_manager);
+void draw_overview(struct sys_management_t *sys_manager);
 #endif

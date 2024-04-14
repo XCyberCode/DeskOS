@@ -4,16 +4,21 @@
 
 // Подключение внутренних библиотек фреймворка
 #include <esp_err.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <driver/gpio.h>
+#include <esp_timer.h>
 
-// Include external libraries
+// Подключение внешних библиотек
 #include <led_strip.h>
 
 // Подключение компонентов системы
 #include <led_matrix.h>
 #include <sysconf.h>
 #include <ui.h>
+#include <manager.h>
 
-void effect_hsv_rainbow(led_strip_handle_t matrix_handle, uint8_t matrix_brightness);
-void effect_linear_hsv_rainbow(led_strip_handle_t matrix_handle, uint8_t matrix_brightness);
-void effect_bouncing_ball(led_strip_handle_t matrix_handle, uint8_t matrix_brightness);
+void effect_hsv_rainbow(struct sys_management_t *sys_manager, bool (*hook_handler)(void));
+void effect_linear_hsv_rainbow(struct sys_management_t *sys_manager, bool (*hook_handler)(void));
+void effect_bouncing_ball(struct sys_management_t *sys_manager, bool (*hook_handler)(void));
 #endif
