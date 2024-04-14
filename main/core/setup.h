@@ -9,7 +9,7 @@
 #include <driver/gpio.h>
 #include <driver/i2c_master.h>
 
-// Include external libraries
+// Подключение внешних библиотек
 #include <led_strip.h>
 
 // Подключение компонентов системы

@@ -2,7 +2,7 @@
 #ifndef LED_MATRIX_HEADER_FLAG
 #define LED_MATRIX_HEADER_FLAG
 
-// Include external libaries
+// Подключение внешних библиотек
 #include <led_strip.h>
 
 void led_matrix_draw_pixel
