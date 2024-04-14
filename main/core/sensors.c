@@ -23,7 +23,7 @@ void sensor_write_queue(void *timer_parameters)
         sys_manager->data_availability++;
     }
     ESP_LOGI("sensors", "Measurements queue has been updated.");
-    ESP_LOGI("sensors", "New values: T-%d, P-%d", sys_manager->temperature_queue[0], sys_manager->pressure_queue[0]);
+    ESP_LOGI("sensors", "New values: T:%.0f, P:%.0f", sys_manager->temperature_queue[0], sys_manager->pressure_queue[0]);
     ESP_LOGI("sensors", "Current availability is %d.", sys_manager->data_availability);
 }
 
@@ -89,6 +89,7 @@ void sensor_update_task(void *task_parameters)
 
         bmp_read_pressure(bmp_config, &current_pressure);
         sys_manager->current_pressure = current_pressure;
+
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     };
 }

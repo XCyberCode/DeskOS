@@ -12,10 +12,10 @@
 typedef struct sys_management_t
 {
     led_strip_handle_t matrix_handle;
-    int16_t temperature_queue[8];
-    int16_t current_temperature;
-    uint16_t pressure_queue[8];
-    uint16_t current_pressure;
+    float temperature_queue[8];
+    float current_temperature;
+    float pressure_queue[8];
+    float current_pressure;
     uint8_t data_availability;
 } sys_management_t;
 #endif
