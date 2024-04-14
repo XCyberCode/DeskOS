@@ -81,7 +81,7 @@ void sensor_update_task(void *task_parameters)
     sys_manager->current_pressure = current_pressure;
     sensor_write_queue(task_parameters);
 
-    ESP_ERROR_CHECK(esp_timer_start_periodic(sensor_queue_handle, 1000*1000*SENSORS_UPDATE_DELAY));
+    ESP_ERROR_CHECK(esp_timer_start_periodic(sensor_queue_handle, 1000 * 1000 * QUEUE_UPDATE_DELAY));
     while(1)
     {
         bmp_read_temperature(bmp_config, &current_temperature);

@@ -8,7 +8,19 @@ void draw_idleview(struct sys_management_t *sys_manager)
 void draw_statview(struct sys_management_t *sys_manager);
 void draw_dataview(struct sys_management_t *sys_manager)
 {
-    
+    led_matrix_clear(sys_manager->matrix_handle);
+    for(int item = 0; item < sys_manager->data_availability; item++)
+    {
+        if(sys_manager->current_dataview_chart == 0)
+        {
+            led_matrix_draw_v_line(sys_manager->matrix_handle, item, 0, fast_remap(sys_manager->temperature_queue[item], 16, 32, 1, 8), 50, 0, 0);
+        }
+        else if(sys_manager->current_dataview_chart == 1)
+        {
+            led_matrix_draw_v_line(sys_manager->matrix_handle, item, 0, fast_remap(sys_manager->pressure_queue[item], 740, 780, 1, 8), 40, 0, 40);
+        }
+    }
+    ESP_ERROR_CHECK(led_strip_refresh(sys_manager->matrix_handle));
 }
 void draw_overview(struct sys_management_t *sys_manager);
 
@@ -39,6 +51,18 @@ void ui_update_task(void *task_parameters)
 
     while(1)
     {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        draw_dataview(sys_manager);
+        if(gpio_get_level(CENTER_BTN_GPIO))
+        {
+            if(sys_manager->current_dataview_chart < 1)
+            {
+                sys_manager->current_dataview_chart++;
+            }
+            else 
+            {
+                sys_manager->current_dataview_chart = 0;
+            }
+            while(gpio_get_level(CENTER_BTN_GPIO));
+        }
     }
 }

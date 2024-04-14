@@ -1,9 +1,6 @@
-// Pin number of the left button
-#define CON1_GPIO GPIO_NUM_26
-// Pin number of the center button
-#define CON2_GPIO GPIO_NUM_25
-// Pin number of the right button
-#define CON3_GPIO GPIO_NUM_27
+#define LEFT_BTN_GPIO GPIO_NUM_26
+#define CENTER_BTN_GPIO GPIO_NUM_25
+#define RIGHT_BTN_GPIO GPIO_NUM_27
 
 // Pin number of the matrix connector
 #define MCON1_GPIO GPIO_NUM_32
@@ -18,7 +15,7 @@
 #define DEFAULT_BRIGHTNESS 1 // From 1 ... 25
 
 // Climate sensors update delay in seconds
-#define SENSORS_UPDATE_DELAY 60*5
+#define QUEUE_UPDATE_DELAY 60*20
 
 // Set sensors address
 #define SENSOR_BMPX80_ADDRESS 0x77

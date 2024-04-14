@@ -13,6 +13,7 @@
 #include <sysconf.h>
 #include <effects.h>
 #include <manager.h>
+#include <tools.h>
 
 typedef struct ui_elements_config_t
 {
