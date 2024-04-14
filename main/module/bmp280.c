@@ -64,16 +64,7 @@ esp_err_t bmp_init(bmp_config_t *sensor_config)
     
     // Wait sensor
     transmit_data[0] = BMP280_REG_STATUS;
-    while(1)
-    {
-        ESP_ERROR_CHECK(i2c_master_transmit(sensor_config->dev_handle, transmit_data, 1, -1));
-        ESP_ERROR_CHECK(i2c_master_receive(sensor_config->dev_handle, received_data, 1, -1));
-        ESP_LOGI("bmp", "Current state is %d", received_data[0]);
-        if(received_data[0] == 0)
-        {
-            break;
-        }
-    }
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     // Prepare sensor
     bmp_read_calibration_data(sensor_config);
@@ -81,13 +72,11 @@ esp_err_t bmp_init(bmp_config_t *sensor_config)
     // Configure filtering and the delay between measurements
     transmit_data[0] = BMP280_REG_CONFIG;
     transmit_data[1] = (sensor_config->standby_time << 5) | (sensor_config->filter << 2);
-    ESP_LOGI("bmp", "Second packet: %d", transmit_data[1]);
     ESP_ERROR_CHECK(i2c_master_transmit(sensor_config->dev_handle, transmit_data, 2, -1));
     
     // Configure oversampling and working mode
     transmit_data[0] = BMP280_REG_CONTROL;
     transmit_data[1] = (sensor_config->osrs_temp << 5) | (sensor_config->osrs_press << 2) | (sensor_config->mode);
-    ESP_LOGI("bmp", "First packet: %d", transmit_data[1]);
     ESP_ERROR_CHECK(i2c_master_transmit(sensor_config->dev_handle, transmit_data, 2, -1));
 
     // Return state

@@ -6,6 +6,8 @@
 #include <driver/i2c_master.h>
 #include <esp_err.h>
 #include <esp_log.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
 // Define registers used in the sensor
 #define BMP280_REG_TEMP_XLSB   0xFC // Only 4 bits
