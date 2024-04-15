@@ -5,6 +5,12 @@
 // Подключение внешних библиотек
 #include <led_strip.h>
 
+// Include internal libraries
+#include <esp_log.h>
+
+// Include core components
+#include <sysconf.h>
+
 void led_matrix_draw_pixel
 (
     led_strip_handle_t matrix_handle, 
