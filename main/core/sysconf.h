@@ -14,8 +14,10 @@
 // Default brightness of the matrix
 #define DEFAULT_BRIGHTNESS 1 // From 1 ... 25
 
-// Climate sensors update delay in seconds
-#define QUEUE_UPDATE_DELAY 60*20
+// Период обновления очереди данных о климате (в секундах)
+#define QUEUE_UPDATE_DELAY 60*1
+// Период обновления данных с сенсоров (в миллисекундах)
+#define SENSORS_UPDATE_DELAY 200
 
 // Set sensors address
 #define SENSOR_BMPX80_ADDRESS 0x77

@@ -4,24 +4,26 @@
 void sensor_write_queue(void *timer_parameters)
 {
     struct sys_management_t *sys_manager = timer_parameters;
+    
+    if(sys_manager->data_availability < 8)
+    {
+        sys_manager->data_availability++;
+    }
+
     memcpy(
         sys_manager->temperature_queue + 1, 
         sys_manager->temperature_queue,
-        sys_manager->data_availability * sizeof(sys_manager->temperature_queue[0])
+        (sys_manager->data_availability - 1) * sizeof(sys_manager->temperature_queue[0])
     );
     sys_manager->temperature_queue[0] = sys_manager->current_temperature;
 
     memcpy(
         sys_manager->pressure_queue + 1,
         sys_manager->pressure_queue,
-        sys_manager->data_availability * sizeof(sys_manager->pressure_queue[0])
+        (sys_manager->data_availability - 1) * sizeof(sys_manager->pressure_queue[0])
     );
     sys_manager->pressure_queue[0] = sys_manager->current_pressure * 0.0075;
-    
-    if(sys_manager->data_availability < 8)
-    {
-        sys_manager->data_availability++;
-    }
+
     ESP_LOGI("sensors", "Measurements queue has been updated.");
     ESP_LOGI("sensors", "New values: T:%.0f, P:%.0f", sys_manager->temperature_queue[0], sys_manager->pressure_queue[0]);
     ESP_LOGI("sensors", "Current availability is %d.", sys_manager->data_availability);
@@ -90,6 +92,6 @@ void sensor_update_task(void *task_parameters)
         bmp_read_pressure(bmp_config, &current_pressure);
         sys_manager->current_pressure = current_pressure;
 
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(SENSORS_UPDATE_DELAY / portTICK_PERIOD_MS);
     };
 }
