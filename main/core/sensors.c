@@ -24,8 +24,23 @@ void sensor_write_queue(void *timer_parameters)
     );
     sys_manager->pressure_queue[0] = sys_manager->current_pressure * 0.0075;
 
+    memcpy(
+        sys_manager->forecast_queue + 1,
+        sys_manager->forecast_queue,
+        (sys_manager->data_availability - 1) * sizeof(sys_manager->forecast_queue[0])
+    );
+    if(sys_manager->pressure_queue[0] > sys_manager->pressure_queue[1] && sys_manager->current_forecast > -4)
+    {
+        sys_manager->current_forecast--;
+    }
+    else if(sys_manager->pressure_queue[0] < sys_manager->pressure_queue[1] && sys_manager->current_forecast < 3)
+    {
+        sys_manager->current_forecast++;
+    }
+    sys_manager->forecast_queue[0] = sys_manager->current_forecast;
+
     ESP_LOGI("sensors", "Measurements queue has been updated.");
-    ESP_LOGI("sensors", "New values: T:%.0f, P:%.0f", sys_manager->temperature_queue[0], sys_manager->pressure_queue[0]);
+    ESP_LOGI("sensors", "New values: T:%.0f, P:%.0f, F:%d", sys_manager->temperature_queue[0], sys_manager->pressure_queue[0], sys_manager->forecast_queue[0]);
     ESP_LOGI("sensors", "Current availability is %d.", sys_manager->data_availability);
 }
 

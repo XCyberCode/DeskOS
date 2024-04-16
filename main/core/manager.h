@@ -16,6 +16,8 @@ typedef struct sys_management_t
     float current_temperature;
     float pressure_queue[8];
     float current_pressure;
+    int8_t forecast_queue[8];
+    int8_t current_forecast;
     uint8_t data_availability;
     uint8_t current_dataview_chart;
 } sys_management_t;

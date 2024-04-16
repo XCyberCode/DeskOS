@@ -74,6 +74,7 @@ void led_matrix_draw_v_line(
     uint8_t red, uint8_t green, uint8_t blue
 )
 {
+    ESP_LOGI("mtrx", "Pixel to draw: x%d y%d l%d", x, y, length);
     for(int pixel = 0; pixel < length; pixel++)
     {
         led_matrix_draw_pixel(matrix_handle, x, y + pixel, red, green, blue);

@@ -19,6 +19,10 @@ void draw_dataview(struct sys_management_t *sys_manager)
         {
             led_matrix_draw_v_line(sys_manager->matrix_handle, item, 0, fast_remap(sys_manager->pressure_queue[item], 740, 780, 1, 8), 40, 0, 40);
         }
+        else if(sys_manager->current_dataview_chart == 2)
+        {
+            led_matrix_draw_pixel(sys_manager->matrix_handle, item, fast_remap(sys_manager->forecast_queue[item], -4, 3, 0, 7), 40, 40, 0);
+        }
     }
     ESP_ERROR_CHECK(led_strip_refresh(sys_manager->matrix_handle));
 }
@@ -54,7 +58,7 @@ void ui_update_task(void *task_parameters)
         draw_dataview(sys_manager);
         if(gpio_get_level(CENTER_BTN_GPIO))
         {
-            if(sys_manager->current_dataview_chart < 1)
+            if(sys_manager->current_dataview_chart < 2)
             {
                 sys_manager->current_dataview_chart++;
             }

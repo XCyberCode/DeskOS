@@ -28,6 +28,7 @@ void app_main(void)
 
     sys_manager.data_availability = 0;
     sys_manager.current_dataview_chart = 0;
+    sys_manager.current_forecast = 0;
 
     xTaskCreate(sensor_update_task, "sensors", 4096, (void*)&sys_manager, 1, NULL);
     xTaskCreate(ui_update_task, "ui", 4096, (void*)&sys_manager, 1, NULL);
